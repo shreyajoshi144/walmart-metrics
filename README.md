@@ -1,4 +1,4 @@
-# Walmart Sales Insights
+# Walmart Metrics
 
 ## Overview
 End-to-end **SQL + Python data analysis project** on Walmart sales data.  
