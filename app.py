@@ -3,14 +3,14 @@ import pandas as pd
 import requests
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
-
+import os
 # -------------------- CONFIG --------------------
 st.set_page_config(
     page_title="Walmart Sales Dashboard",
     layout="wide"
 )
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
 
 # -------------------- SAFE API CALL --------------------
 def safe_get(url):
@@ -27,9 +27,6 @@ def load_data():
     category_data = safe_get(f"{API_URL}/category-summary")
 
     df = pd.DataFrame(category_data)
-
-    # Map backend → frontend schema
-    df["total_sales"] = df["revenue"]
 
     return metrics, df
 
@@ -73,15 +70,13 @@ col3.metric("Avg Order Value", f"${metrics['avg_order_value']:.2f}")
 # -------------------- CATEGORY-WISE INSIGHTS --------------------
 st.subheader("📂 Category-wise Insights")
 
-category_summary = (
-    df.groupby("category")
-    .agg(
-        Revenue=("total_sales", "sum"),
-        Orders=("total_sales", "count"),
-        Avg_Order_Value=("total_sales", "mean")
-    )
-    .sort_values(by="Revenue", ascending=False)
-)
+category_summary = df.set_index("category").sort_values(by="revenue", ascending=False)
+
+category_summary.rename(columns={
+    "revenue": "Revenue",
+    "orders": "Orders",
+    "avg_order_value": "Avg_Order_Value"
+}, inplace=True)
 
 st.dataframe(category_summary.style.format({
     "Revenue": "${:,.0f}",
@@ -89,7 +84,7 @@ st.dataframe(category_summary.style.format({
 }))
 
 # -------------------- FILTER --------------------
-st.subheader(" 📂 Category Comparison")
+st.subheader("📊 Category Selection & Comparison")
 
 selected_categories = st.multiselect(
     "Select categories to compare",
@@ -114,16 +109,16 @@ with col1:
     ax1.set_xlabel("Revenue ($)")
     ax1.set_ylabel("Category")
 
+    ax1.set_box_aspect(1)
+
     ax1.xaxis.set_major_formatter(
         mticker.FuncFormatter(lambda x, _: f"${x:,.0f}")
     )
 
-    plt.tight_layout()
     st.pyplot(fig1)
-
 # -------- PIE CHART --------
 with col2:
-    st.markdown("### 📊 Revenue Contribution ")
+    st.markdown("### 🥧 Revenue Contribution ")
 
     fig2, ax2 = plt.subplots(figsize=FIG_SIZE)
 
@@ -154,20 +149,111 @@ low = category_summary.iloc[-1]
 
 col1, col2 = st.columns(2)
 
-col1.success(f"Top Category: {top.name} (${top['Revenue']:,.0f})")
-col2.error(f"Lowest Category: {low.name} (${low['Revenue']:,.0f})")
+with col1:
+    st.markdown("**Top Category**")
+    st.markdown(f"{top.name}")
+    st.markdown(f"${top['Revenue']:,.0f}")
+
+with col2:
+    st.markdown("**Lowest Category**")
+    st.markdown(f"{low.name}")
+    st.markdown(f"${low['Revenue']:,.0f}")
+
+
+# -------------------- ADDITIONAL INSIGHTS --------------------
+st.subheader("📌 Additional Insights")
+
+analysis_data = safe_get(f"{API_URL}/analysis-data")
+adf = pd.DataFrame(analysis_data)
+
+if not adf.empty:
+
+    adf["date"] = pd.to_datetime(adf["date"], errors="coerce")
+    adf = adf.dropna(subset=["date"])
+
+    # ---------- PREP ----------
+    adf["day"] = adf["date"].dt.day_name()
+
+    day_sales = adf.groupby("day")["total_sales"].sum()
+
+    days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    day_sales = day_sales.reindex(days_order)
+
+    # ---------- SIDE BY SIDE ----------
+    col1, col2 = st.columns(2)
+
+    # ----- SALES BY DAY -----
+    with col1:
+        st.markdown("### 📅 Sales by Day")
+
+        fig1, ax1 = plt.subplots(figsize=(6, 4))
+
+        ax1.bar(day_sales.index, day_sales.values, color="#A7C7E7")
+
+        ax1.set_ylabel("Sales ($)")
+        ax1.set_xticks(range(len(day_sales.index)))
+        ax1.set_xticklabels(day_sales.index, rotation=30)
+
+        plt.tight_layout()
+        st.pyplot(fig1)
+
+    # ----- ORDER DISTRIBUTION -----
+    with col2:
+        st.markdown("### 📈 Order Value Distribution")
+
+        fig2, ax2 = plt.subplots(figsize=(6, 4))
+
+        ax2.hist(adf["total_sales"], bins=30, color="#F4C2C2")
+
+        ax2.set_xlabel("Order Value ($)")
+        ax2.set_ylabel("Count")
+
+        plt.tight_layout()
+        st.pyplot(fig2)
 # -------------------- FINAL INSIGHT --------------------
 st.subheader("💡 Final Insight")
 
 if not filtered.empty:
     top_category = filtered["Revenue"].idxmax()
+    total_revenue = filtered["Revenue"].sum()
+    top_revenue = filtered["Revenue"].max()
 
-    st.markdown(f"""
-###  Key Result
-- **Top Performing Category:** {top_category}  
-- **Highest Revenue Contribution:** {top_category}  
+    share = (top_revenue / total_revenue) * 100
 
-Both the **bar chart** and **pie chart** indicate that *{top_category}* dominates overall sales.
+    if share > 50:
+        st.markdown(f"""
+### Key Insight
+
+- **{top_category} contributes ~{share:.1f}% of total revenue**, indicating a strong concentration of sales in a single category.
+
+### 🎯 Interpretation:
+
+-  The business is **highly dependent on one category**, which increases risk if demand shifts.
+-  This category is a **major growth driver**, so optimizing pricing, inventory, or promotions here can significantly boost revenue.
+-  Other categories are underperforming and may need targeted strategies to improve balance.
 """)
+
+    elif share > 30:
+        st.markdown(f"""
+
+- **{top_category} contributes ~{share:.1f}% of total revenue**, showing a noticeable lead over other categories.
+
+### 🎯 Interpretation:
+
+-  Revenue is **moderately concentrated**, with one category performing better than others.
+-  There is opportunity to **scale this category further**, while also improving weaker categories for balanced growth.
+""")
+
+    else:
+        st.markdown(f"""
+
+- Revenue is **fairly distributed across categories**, with {top_category} contributing ~{share:.1f}%.
+
+### Interpretation:
+
+- The business has a **diversified revenue base**, reducing dependency risk.
+- Growth can come from **multiple categories**, not just one dominant segment.
+""")
+
 else:
     st.warning("Please select at least one category.")
