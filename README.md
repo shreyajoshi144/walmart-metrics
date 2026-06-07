@@ -1,147 +1,149 @@
-# 📊 Walmart Metrics
+# Walmart Metrics: Retail Sales Analytics & Reporting Platform
 
-## 🚀 Project Overview
+## Overview
 
-Walmart Metrics is a data pipeline and API-driven analytics system designed to process raw retail sales data into structured, queryable insights.
+Walmart Metrics is an end-to-end retail analytics project that transforms raw transactional sales data into actionable business insights through data processing, API-driven analytics, and interactive dashboards.
 
-The project focuses on building a clean **data engineering + backend workflow**, where raw transactional data is transformed using Pandas, validated and stored in a relational database (SQLite), and exposed through RESTful APIs using FastAPI.
+The project combines data engineering, business intelligence, and reporting practices to support revenue analysis, sales trend monitoring, customer behavior analysis, and executive decision-making.
 
-Instead of relying on unreliable dimensions (such as inconsistent timestamps or missing hierarchies), the system is intentionally designed around **robust, high-quality features (category-level aggregation)** to ensure stability, correctness, and meaningful insights.
+The solution includes:
 
-Key highlights of the system include:
+* Data cleaning and transformation using Python and Pandas
+* Structured data storage using SQLite
+* REST API development using FastAPI
+* Interactive reporting with Streamlit
+* Business intelligence dashboards using Tableau
+* KPI monitoring and trend analysis for business stakeholders
 
-* End-to-end **data pipeline (raw → cleaned → structured storage)**
-* Efficient **aggregation queries at the database/API layer**
-* Clean separation of concerns between **data processing, storage, and serving**
-* Lightweight but scalable **API-first architecture**
-
-The frontend dashboard serves as a thin visualization layer, consuming backend APIs to display results, while the core logic and computation remain within the backend.
-
-
-## 🧱 Architecture Pipeline & Flow
-
-<img width="1536" height="1024" alt="ChatGPT Image Apr 28, 2026, 11_13_12 PM" src="https://github.com/user-attachments/assets/7264801d-4a46-4c4a-980e-41cf6bd62786" />
-
-
-## 🔧 Tech Stack
-
-* **Python**
-* **Pandas** – data cleaning & transformation
-* **SQLite** – lightweight database
-* **FastAPI** – backend API layer
-* **Streamlit** – frontend dashboard
-* **Matplotlib** – visualizations
+The objective was to simulate a real-world analytics workflow where raw retail transactions are transformed into reliable reporting assets for business users.
 
 ---
 
-## ⚙️ Features
+## Business Objectives
 
-### 📌 Data Pipeline
+The project was designed to answer key business questions:
 
-* Ingested raw transactional data from source tables
-* Performed structured data cleaning using Pandas
-* Generated derived metrics such as `total_sales`
-* Validated and removed inconsistent / invalid records
-* Stored processed data in a normalized SQLite table (`SalesClean`)
-
----
-
-### 🧠 Data Modeling & Aggregation
-
-* Designed category-level aggregation logic
-* Computed:
-
-  * Total revenue per category
-  * Order counts per category
-  * Average order value
-* Ensured aggregations are performed at the backend layer (not frontend)
+* How is overall sales performance trending?
+* Which product categories generate the highest revenue?
+* Which branches contribute the most sales?
+* What seasonal patterns impact revenue?
+* Which payment methods drive the largest transaction volume?
+* How do customer ratings vary across categories?
+* What growth opportunities exist across time periods?
 
 ---
 
-### 🌐 Backend (FastAPI)
+## Technology Stack
 
-* Built RESTful APIs to expose processed data
-* Implemented endpoints for:
+### Data Processing
 
-  * Global metrics (`/metrics`)
-  * Category-level summaries (`/category-summary`)
-* Separated data access, computation, and API layers
-* Designed lightweight and efficient query handling using SQLite
+* Python
+* Pandas
 
----
+### Data Storage
 
-### 🖥️ Frontend (Streamlit)
+* SQLite
 
-* Acts as a thin client consuming backend APIs
-* Displays aggregated insights without performing heavy computation
-* Supports category-level comparison and filtering
+### Backend Services
 
----
+* FastAPI
 
-## 🧪 Data Processing
+### Visualization & Reporting
 
-Handled via a dedicated ETL script:
-
-* Standardized column names for consistency
-* Converted numeric fields (`quantity`, `unit_price`)
-* Created derived metric: `total_sales = quantity × unit_price`
-* Converted and validated date fields (with error handling)
-* Removed invalid/null records to ensure clean dataset
-* Persisted processed data into `SalesClean` table
+* Tableau
+* Streamlit
+* Matplotlib
 
 ---
 
-## 🌐 API Endpoints
+## Data Pipeline
 
-| Endpoint            | Description                        |
-| ------------------- | ---------------------------------- |
-| `/`                 | Service health check               |
-| `/metrics`          | Global aggregated KPIs             |
-| `/category-summary` | Category-level aggregated insights |
+<img width="1536" height="1024" alt="ChatGPT Image Jun 7, 2026, 01_34_33 PM" src="https://github.com/user-attachments/assets/9c735b28-6184-4fe1-a949-3594341ec7d4" />
+
+
+### Data Ingestion
+
+Raw retail transaction data was collected and processed through an ETL workflow.
+
+### Data Cleaning
+
+The dataset was standardized by:
+
+* Handling missing values
+* Removing invalid records
+* Standardizing column names
+* Validating date fields
+* Converting numerical columns to appropriate formats
+
+### Feature Engineering
+
+Derived business metrics were created, including:
+
+* Total Sales
+* Revenue After Margin
+* Profit Margin
+* Average Order Value
+* Category-Level Aggregations
+
+### Storage Layer
+
+Cleaned data was stored in a structured SQLite database to support reporting and API consumption.
 
 ---
 
-## 📊 Visualization Layer
+## Analytics & Reporting
 
-* Category comparison (bar chart)
-* Revenue distribution (pie chart)
-* Summary tables for quick inspection
+### Executive Sales Dashboard
 
-> Note: All computations are handled in the backend; the frontend is used only for visualization.
+Provides a high-level view of business performance through:
 
-## ▶️ How to Run
+* Total Revenue
+* Units Sold
+* Customer Rating
+* Transaction Volume
+* Revenue by Category
+* Branch Performance
+* Payment Method Distribution
 
-### 1. Clone repo
+### Sales Trends & Seasonality Dashboard
 
-```
-git clone <your-repo>
-cd project-folder
-```
+Analyzes temporal performance patterns:
 
-### 2. Install dependencies
+* Revenue by Year
+* Revenue by Day of Week
+* Month-over-Month Growth
+* Revenue Heatmap
+* Seasonal Performance Analysis
 
-```
-pip install -r requirements.txt
-```
+### Key Business Insights
 
-### 3. Run backend
+* Revenue demonstrates strong year-end seasonality, with November and December consistently outperforming most months.
+* Tuesday generates the highest weekly revenue, while Monday represents the lowest-performing sales day.
+* Fashion Accessories and Home & Lifestyle contribute significantly to overall revenue performance.
+* Revenue growth exhibits clear seasonal fluctuations, creating opportunities for targeted promotional campaigns.
 
-```
-uvicorn backend.main:app --reload
-```
+---
 
-### 4. Run frontend
+## API Endpoints
 
-```
-streamlit run app.py
-```
+| Endpoint          | Description              |
+| ----------------- | ------------------------ |
+| /                 | Service Health Check     |
+| /metrics          | Global KPI Metrics       |
+| /category-summary | Category-Level Analytics |
 
 ---
 
 ## 📁 Project Structure
 
 ```
-project/
+Walmart-Metrics/
+│
+├── data/
+│   ├── walmart_sales_data.csv
+│   ├── sales_clean_data.csv
+│   ├── walmart_dashboard_data.csv
+│   └── walmart_sales.db
 │
 ├── backend/
 │   └── main.py
@@ -149,39 +151,99 @@ project/
 ├── scripts/
 │   └── create_clean_table.py
 │
-├── data/
-│   └── walmart_sales.db
+├── tableau/
+│   ├── Executive_Sales_Monitoring.twbx
+│   └── Sales_Trends_Seasonality.twbx
+│
+├── dashboard/
+│   ├── streamlit_app.py
+│   └── assets/
 │
 ├── app.py
 ├── requirements.txt
-└── README.md
+├── README.md
+└── .gitignore
+```
+
+## Dashboard Highlights
+
+### Dashboard 1: Walmart Sales Dashboard
+
+Executive reporting dashboard focused on:
+
+* Revenue Monitoring
+* KPI Tracking
+* Category Analysis
+* Branch Performance
+* Payment Method Insights
+
+### Dashboard 2: Walmart Sales Trends
+
+Trend-focused dashboard analyzing:
+
+* Revenue Trends
+* Seasonality Patterns
+* Weekly Sales Behavior
+* Growth Analysis
+
+---
+
+## How to Run
+
+### Clone Repository
+
+```bash
+git clone <repository-url>
+cd walmart-metrics
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run Backend
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+### Run Frontend
+
+```bash
+streamlit run app.py
 ```
 
 ---
 
-## 💡 Key Learnings
+## Skills Demonstrated
 
-* Built a full data pipeline from raw data → dashboard
-* Implemented API-driven architecture
-* Learned to align features with dataset limitations
-* Focused on clean, stable, and explainable design
+* Data Cleaning & Transformation
+* Exploratory Data Analysis
+* Business Intelligence Reporting
+* KPI Development
+* Dashboard Design
+* SQL & Database Management
+* API Development
+* Data Storytelling
+* Trend & Seasonality Analysis
+* Retail Sales Analytics
 
 ---
 
-## 🚀 Future Improvements
+## Future Enhancements
 
-* Add time-based filtering (if dataset improves)
-* Improve dataset quality for deeper insights
+* Automated dashboard refresh pipelines
+* Advanced customer segmentation
+* Forecasting and predictive analytics
+* Interactive drill-down reporting
+* Cloud deployment and orchestration
 
 ---
 
-## 📌 Summary
+## Project Outcome
 
-This project demonstrates how to build a **complete data analytics system** using:
+This project demonstrates a complete analytics workflow from raw transactional data to executive-ready business reporting.
 
-* Data cleaning
-* Database storage
-* REST API backend
-* Interactive frontend dashboard
-
-All designed around **realistic constraints of the dataset**.
+By combining data engineering, API development, and business intelligence dashboards, the solution delivers actionable insights that support sales monitoring, trend analysis, and data-driven decision-making.
