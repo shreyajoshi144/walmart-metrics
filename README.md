@@ -17,6 +17,10 @@ The solution includes:
 
 The objective was to simulate a real-world analytics workflow where raw retail transactions are transformed into reliable reporting assets for business users.
 
+## Tech Stack
+
+Python • Pandas • SQLite • FastAPI • Streamlit • Tableau • Matplotlib
+
 ---
 
 ## Business Objectives
@@ -31,28 +35,26 @@ The project was designed to answer key business questions:
 * How do customer ratings vary across categories?
 * What growth opportunities exist across time periods?
 
----
+## Live Demo
 
-## Technology Stack
+🚀 Streamlit Dashboard  
+https://walmart-metrics.onrender.com/
 
-### Data Processing
+## Tableau Dashboards
 
-* Python
-* Pandas
+📊 Executive Sales Dashboard  
+https://public.tableau.com/views/WalmartSalesOverview_17808167397040/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 
-### Data Storage
+📈 Sales Trends & Seasonality Dashboard  
+https://public.tableau.com/views/WalmartSalesTrends_17808168171460/Dashboard2?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+## Dashboard Preview
 
-* SQLite
+### Executive Sales Dashboard
+<img width="1470" height="956" alt="Screenshot 2026-06-14 at 6 04 14 PM" src="https://github.com/user-attachments/assets/c3454d73-1e24-42eb-a252-637ef33910cc" />
 
-### Backend Services
+### Sales Trends Dashboard
+<img width="1463" height="768" alt="Screenshot 2026-06-14 at 6 04 27 PM" src="https://github.com/user-attachments/assets/9144720a-b7a7-42a0-b072-88955e4df7f8" />
 
-* FastAPI
-
-### Visualization & Reporting
-
-* Tableau
-* Streamlit
-* Matplotlib
 
 ---
 
@@ -217,20 +219,7 @@ streamlit run app.py
 
 ---
 
-## Skills Demonstrated
 
-* Data Cleaning & Transformation
-* Exploratory Data Analysis
-* Business Intelligence Reporting
-* KPI Development
-* Dashboard Design
-* SQL & Database Management
-* API Development
-* Data Storytelling
-* Trend & Seasonality Analysis
-* Retail Sales Analytics
-
----
 
 ## Future Enhancements
 
@@ -240,10 +229,3 @@ streamlit run app.py
 * Interactive drill-down reporting
 * Cloud deployment and orchestration
 
----
-
-## Project Outcome
-
-This project demonstrates a complete analytics workflow from raw transactional data to executive-ready business reporting.
-
-By combining data engineering, API development, and business intelligence dashboards, the solution delivers actionable insights that support sales monitoring, trend analysis, and data-driven decision-making.
