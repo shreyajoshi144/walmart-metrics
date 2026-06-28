@@ -2,20 +2,11 @@
 
 ## Overview
 
-Walmart Metrics is an end-to-end retail analytics project that transforms raw transactional sales data into actionable business insights through data processing, API-driven analytics, and interactive dashboards.
-
-The project combines data engineering, business intelligence, and reporting practices to support revenue analysis, sales trend monitoring, customer behavior analysis, and executive decision-making.
-
-The solution includes:
-
-* Data cleaning and transformation using Python and Pandas
-* Structured data storage using SQLite
-* REST API development using FastAPI
-* Interactive reporting with Streamlit
-* Business intelligence dashboards using Tableau
-* KPI monitoring and trend analysis for business stakeholders
-
+Walmart Metrics is a retail sales analytics platform that transforms raw transactional data into business-ready insights through an end-to-end analytics pipeline. The project includes data cleaning, feature engineering, REST APIs, interactive Streamlit dashboards, and Tableau executive reports to support KPI monitoring, sales analysis, and business decision-making.
 The objective was to simulate a real-world analytics workflow where raw retail transactions are transformed into reliable reporting assets for business users.
+
+
+<img width="1536" height="1024" alt="ChatGPT Image Jun 7, 2026, 01_34_33 PM" src="https://github.com/user-attachments/assets/9c735b28-6184-4fe1-a949-3594341ec7d4" />
 
 ## Tech Stack
 
@@ -34,6 +25,24 @@ The project was designed to answer key business questions:
 * Which payment methods drive the largest transaction volume?
 * How do customer ratings vary across categories?
 * What growth opportunities exist across time periods?
+
+## Features
+
+✅ Automated ETL Pipeline
+
+✅ KPI Analytics API
+
+✅ Interactive Streamlit Dashboard
+
+✅ Executive Tableau Reports
+
+✅ Category & Branch Analysis
+
+✅ Revenue Trend Analysis
+
+✅ Seasonality Insights
+
+✅ Payment Method Analytics
 
 ## Live Demo
 
@@ -58,10 +67,18 @@ https://public.tableau.com/views/WalmartSalesTrends_17808168171460/Dashboard2?:l
 
 ---
 
-## Data Pipeline
+## Interactive Streamlit Dashboard
 
-<img width="1536" height="1024" alt="ChatGPT Image Jun 7, 2026, 01_34_33 PM" src="https://github.com/user-attachments/assets/9c735b28-6184-4fe1-a949-3594341ec7d4" />
+<img width="1470" height="956" alt="Screenshot 2026-06-28 at 8 26 19 PM" src="https://github.com/user-attachments/assets/1068d365-c9ec-414d-a7dc-ccb18e06a6df" />
 
+<img width="1470" height="956" alt="Screenshot 2026-06-28 at 8 26 25 PM" src="https://github.com/user-attachments/assets/30828df4-f1c6-49b1-b670-be660f1fde29" />
+
+<img width="1470" height="956" alt="Screenshot 2026-06-28 at 8 26 42 PM" src="https://github.com/user-attachments/assets/607d8f2e-756a-4fd4-9e5a-4401d1bc46c5" />
+
+
+---
+
+## Details
 
 ### Data Ingestion
 
